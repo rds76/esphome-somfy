@@ -24,7 +24,7 @@ public:
     }
     uint16_t nextCode() override
     {
-        uint16_t code, cone_new;
+        uint16_t code, code_new;
         preferences.load(&code);
         code_new = code;
         ESP_LOGD(TAG, "Rolling code: %04X", code);
