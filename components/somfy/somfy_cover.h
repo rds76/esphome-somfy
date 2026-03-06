@@ -1,9 +1,9 @@
 #pragma once
 
+#include "esphome.h"
 #include "esphome/components/cover/cover.h"
 #include "esphome/components/cc1101/cc1101.h"
 #include "esphome/core/component.h"
-#include "NVSRollingCodeStorage.h"
 #include "SomfyRemote.h"
 
 namespace esphome {
@@ -13,10 +13,30 @@ using namespace esphome::cover;
 
 static const char *const TAG = "somfy.cover";
 
+class EsphomeCodeStorage : public RollingCodeStorage {
+private:
+    ESPPreferenceObject preferences;
+
+public:
+    EsphomeCodeStorage(uint32_t remoteCode)
+    {
+        preferences = global_preferences->make_preference<uint16_t>(remoteCode, true);
+    }
+    uint16_t nextCode() override
+    {
+        uint16_t code;
+        preferences.load(&code);
+        ESP_LOGD(TAG, "Rolling code: %04X", code.nextCode);
+        code.nextCode++;
+        preferences.save(&code);
+        return code.nextCode--;
+    }
+};
+
 class SomfyCover : public Cover, public Component {
 protected:
   SomfyRemote *remote_;
-  NVSRollingCodeStorage *storage_;
+  EsphomeCodeStorage *storage_;
   const char *storage_namespace_;
   const char *storage_key_;
   InternalGPIOPin *emitter_pin_;
@@ -29,7 +49,8 @@ public:
     this->emitter_pin_->pin_mode(gpio::FLAG_OUTPUT);
     this->emitter_pin_->digital_write(false);
 
-    storage_ = new NVSRollingCodeStorage(storage_namespace_, storage_key_);
+    //storage_ = new NVSRollingCodeStorage(storage_namespace_, storage_key_);
+    storage = new EsphomeCodeStorage(remote_address_);
     remote_ = new SomfyRemote(emitter_pin_, remote_address_, storage_);
   }
 
