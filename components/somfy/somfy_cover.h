@@ -65,9 +65,12 @@ public:
   }
 
   void sendCC1101Command(Command command) {
+    ESP_LOGD(TAG, "Entering TX with freq:: %f", this->somfy_freq_);     
     cc1101_->set_frequency(this->somfy_freq_);
     cc1101_->begin_tx();
+    ESP_LOGD(TAG, "Sending command: %x %dx", command, this->repeat_);     
     remote_->sendCommand(command, this->repeat_);
+    ESP_LOGD(TAG, "Entering RX with freq:: %f", this->rf_freq_);     
     cc1101_->set_frequency(this->rf_freq_);
     cc1101_->begin_rx();
   }
