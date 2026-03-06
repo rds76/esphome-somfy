@@ -66,13 +66,13 @@ public:
 
   void sendCC1101Command(Command command) {
     ESP_LOGD(TAG, "Entering TX with freq:: %.0fHz", this->somfy_freq_);     
-    cc1101_->set_iddle();
+    cc1101_->set_idle();
     cc1101_->set_frequency(this->somfy_freq_);
     cc1101_->begin_tx();
     ESP_LOGD(TAG, "Sending %dx command: 0x%x", this->repeat_, command);     
     remote_->sendCommand(command, this->repeat_);
     ESP_LOGD(TAG, "Entering RX with freq:: %.0fHz", this->rf_freq_);     
-    cc1101_->set_iddle();
+    cc1101_->set_idle();
     cc1101_->set_frequency(this->rf_freq_);
     cc1101_->begin_rx();
   }
