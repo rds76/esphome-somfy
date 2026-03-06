@@ -25,10 +25,9 @@ public:
     uint16_t nextCode() override
     {
         uint16_t code, code_new;
-        preferences.load(&code);
-        code_new = code;
-        ESP_LOGD(TAG, "Rolling code: %04X", code);
-        code_new++;
+        preferences.load(&code);        
+        ESP_LOGD(TAG, "Rolling code: %04X", code);        
+        code_new = code + 1;
         preferences.save(&code_new);
         return code;
     }
@@ -44,6 +43,7 @@ protected:
   uint32_t remote_address_;
   int repeat_;
   cc1101::CC1101Component *cc1101_;
+  float rf_freq_, somfy_freq_;
 
 public:
   void setup() override {
@@ -65,9 +65,11 @@ public:
   }
 
   void sendCC1101Command(Command command) {
+    cc1101_->set_frequency(this->somfy_freq_);
     cc1101_->begin_tx();
     remote_->sendCommand(command, this->repeat_);
-    cc1101_->set_idle();
+    cc1101_->set_frequency(this->rf_freq_);
+    cc1101_->set_rx();
   }
 
   void control(const CoverCall &call) override {
@@ -110,6 +112,8 @@ public:
   }
   void set_repeat(int repeat) { this->repeat_ = repeat; }
   void set_cc1101(cc1101::CC1101Component *cc1101) { this->cc1101_ = cc1101; }
+  void set_rf_freq(float freq) { this->rf_freq_ = freq; }
+  void set_somfy_freq(float freq) { this->somfy_freq_ = freq; }
 };
 
 } // namespace somfy

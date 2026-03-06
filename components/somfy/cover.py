@@ -10,20 +10,22 @@ SomfyCover = somfy_ns.class_("SomfyCover", cover.Cover, cg.Component)
 
 CONF_SOMFY_REMOTE_ADDRESS = "remote_address"
 CONF_SOMFY_PIN = "pin"
-CONF_SOMFY_STORAGE_KEY = "storage_key"
-CONF_SOMFY_STORAGE_NAMESPACE = "storage_namespace"
+CONF_SOMFY_RF_FREQ = "rf_freq"
+CONF_SOMFY_SOMFY_FREQ = "somfy_freq"
 CONF_SOMFY_REPEAT = "repeat"
 CONF_SOMFY_CC1101 = "cc1101"
 
 CONFIG_SCHEMA = cover.cover_schema(SomfyCover).extend(
     {
         cv.Required(CONF_SOMFY_PIN): pins.internal_gpio_output_pin_schema,
-        cv.Required(CONF_SOMFY_REMOTE_ADDRESS): cv.int_,
-        cv.Required(CONF_SOMFY_STORAGE_KEY): cv.All(cv.string, cv.Length(max=15)),
-        cv.Optional(CONF_SOMFY_STORAGE_NAMESPACE, default="somfy"): cv.All(
-            cv.string, cv.Length(max=15)
+        cv.Required(CONF_SOMFY_REMOTE_ADDRESS): cv.int_,        
+        cv.Optional(CONF_SOMFY_REPEAT, default=1): cv.int_range(min=1, max=16),
+        cv.Optional(CONF_SOMFY_RF_FREQ, default="433.92MHz"): cv.All(
+          cv.frequency, cv.float_range(min=300.0e6, max=928.0e6)
         ),
-        cv.Optional(CONF_SOMFY_REPEAT, default=4): cv.int_range(min=1, max=16),
+        cv.Optional(CONF_SOMFY_SOMFY_FREQ, default="433.42MHz"): cv.All(
+          cv.frequency, cv.float_range(min=300.0e6, max=928.0e6)
+        ),        
         cv.Required(CONF_SOMFY_CC1101): cv.use_id(cc1101.CC1101Component),
     }
 ).extend(cv.COMPONENT_SCHEMA)
@@ -40,6 +42,6 @@ async def to_code(config):
     cg.add(var.set_cc1101(cc1101))
 
     cg.add(var.set_remote_address(config[CONF_SOMFY_REMOTE_ADDRESS]))
-    cg.add(var.set_storage_key(config[CONF_SOMFY_STORAGE_KEY]))
-    cg.add(var.set_storage_namespace(config[CONF_SOMFY_STORAGE_NAMESPACE]))
+    cg.add(var.set_rf_freq(config[CONF_SOMFY_RF_FREQ]))
+    cg.add(var.set_somfy_freq(config[CONF_SOMFY_SOMFY_FREQ]))
     cg.add(var.set_repeat(config[CONF_SOMFY_REPEAT]))
