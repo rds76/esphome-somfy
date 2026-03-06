@@ -69,7 +69,7 @@ public:
     cc1101_->begin_tx();
     remote_->sendCommand(command, this->repeat_);
     cc1101_->set_frequency(this->rf_freq_);
-    cc1101_->set_rx();
+    cc1101_->begin_rx();
   }
 
   void control(const CoverCall &call) override {
