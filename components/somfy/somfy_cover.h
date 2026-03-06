@@ -24,12 +24,13 @@ public:
     }
     uint16_t nextCode() override
     {
-        uint16_t code;
+        uint16_t code, cone_new;
         preferences.load(&code);
-        ESP_LOGD(TAG, "Rolling code: %04X", code.nextCode);
-        code.nextCode++;
-        preferences.save(&code);
-        return code.nextCode--;
+        code_new = code;
+        ESP_LOGD(TAG, "Rolling code: %04X", code);
+        code_new++;
+        preferences.save(&code_new);
+        return code;
     }
 };
 
