@@ -6,6 +6,8 @@
 namespace esphome {
 namespace somfy {
 
+inline constexpr const char *TAG = "somfy";
+
 class EsphomeCodeStorage : public RollingCodeStorage {
 private:
     ESPPreferenceObject preferences;

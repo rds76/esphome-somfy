@@ -11,7 +11,7 @@ namespace somfy {
 
 using namespace esphome::light;
 
-static const char *const TAG = "somfy.light";
+inline constexpr const char *TAG = "somfy.light";
 
 class SomfyLightOutput : public LightOutput, public Component {
 protected:
