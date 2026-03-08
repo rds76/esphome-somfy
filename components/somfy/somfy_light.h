@@ -36,8 +36,8 @@ public:
   }
 
   LightTraits get_traits() override {
-    auto traits = light::LightTraits();
-    traits.set_supported_color_modes({light::ColorMode::ON_OFF});
+    auto traits = LightTraits();
+    traits.set_supported_color_modes({ColorMode::ON_OFF});
     return traits;
   }
 
