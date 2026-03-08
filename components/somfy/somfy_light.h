@@ -1,10 +1,10 @@
 #pragma once
 
-#include "esphome.h"
 #include "esphome/components/light/light_output.h"
 #include "esphome/components/cc1101/cc1101.h"
 #include "esphome/core/component.h"
 #include "SomfyRemote.h"
+#include "EsphomeCodeStorage.h"
 
 namespace esphome {
 namespace somfy {
