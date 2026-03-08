@@ -11,7 +11,7 @@ namespace somfy {
 
 using namespace esphome::cover;
 
-inline constexpr const char *TAG = "somfy";
+static const char *const TAG = "somfy";
 
 class SomfyComponent : public Component {
 protected:

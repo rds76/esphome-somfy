@@ -6,7 +6,7 @@
 namespace esphome {
 namespace somfy {
 
-inline constexpr const char *TAG = "somfy";
+static const char *const TAG_CODE = "somfy.code";
 
 class EsphomeCodeStorage : public RollingCodeStorage {
 private:
@@ -21,7 +21,7 @@ public:
     {
         uint16_t code, code_new;
         preferences.load(&code);        
-        ESP_LOGD(TAG, "Rolling code: %04X", code);        
+        ESP_LOGD(TAG_CODE, "Rolling code: %04X", code);        
         code_new = code + 1;
         preferences.save(&code_new);
         return code;
