@@ -1,12 +1,12 @@
 import esphome.config_validation as cv
 import esphome.codegen as cg
-from esphome.components import cover, cc1101
+from esphome.components import light, cc1101
 from esphome import pins
 
 DEPENDENCIES = ["cc1101"]
 
 somfy_ns = cg.esphome_ns.namespace("somfy")
-SomfyCover = somfy_ns.class_("SomfyCover", cover.Cover, cg.Component)
+SomfyLightOutput = somfy_ns.class_("SomfyLightOutput", light.LightOutput, cg.Component)
 
 CONF_SOMFY_REMOTE_ADDRESS = "remote_address"
 CONF_SOMFY_PIN = "pin"
@@ -15,7 +15,7 @@ CONF_SOMFY_SOMFY_FREQ = "somfy_freq"
 CONF_SOMFY_REPEAT = "repeat"
 CONF_SOMFY_CC1101 = "cc1101"
 
-CONFIG_SCHEMA = cover.cover_schema(SomfyCover).extend(
+CONFIG_SCHEMA = light.light_schema(SomfyLightOutput, light.LightType.BINARY).extend(
     {
         cv.Required(CONF_SOMFY_PIN): pins.internal_gpio_output_pin_schema,
         cv.Required(CONF_SOMFY_REMOTE_ADDRESS): cv.int_,        
@@ -32,7 +32,7 @@ CONFIG_SCHEMA = cover.cover_schema(SomfyCover).extend(
 
 
 async def to_code(config):
-    var = await cover.new_cover(config)
+    var = await light.new_light(config)
     await cg.register_component(var, config)
 
     pin = await cg.gpio_pin_expression(config[CONF_SOMFY_PIN])

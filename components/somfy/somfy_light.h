@@ -1,7 +1,7 @@
 #pragma once
 
 #include "esphome.h"
-#include "esphome/components/cover/cover.h"
+#include "esphome/components/light/light_output.h"
 #include "esphome/components/cc1101/cc1101.h"
 #include "esphome/core/component.h"
 #include "SomfyRemote.h"
@@ -9,11 +9,11 @@
 namespace esphome {
 namespace somfy {
 
-using namespace esphome::cover;
+using namespace esphome::light;
 
-static const char *const TAG = "somfy.cover";
+static const char *const TAG = "somfy.light";
 
-class SomfyCover : public Cover, public Component {
+class SomfyLightOutput : public LightOutput, public Component {
 protected:
   SomfyRemote *remote_;
   EsphomeCodeStorage *storage_;
@@ -35,13 +35,16 @@ public:
     remote_ = new SomfyRemote(emitter_pin_, remote_address_, storage_);
   }
 
-  CoverTraits get_traits() override {
-    auto traits = CoverTraits();
-    traits.set_is_assumed_state(true);
-    traits.set_supports_position(false);
-    traits.set_supports_tilt(false);
-    traits.set_supports_stop(true);
+  LightTraits get_traits() override {
+    auto traits = light::LightTraits();
+    traits.set_supported_color_modes({light::ColorMode::ON_OFF});
     return traits;
+  }
+
+  void write_state(LightState *state) override {
+    bool light_state;
+    state->current_values_as_binary(&light_state);
+    sendCC1101Command(light_state ? Command::Up : Command::Down);
   }
 
   void sendCC1101Command(Command command) {
@@ -55,30 +58,6 @@ public:
     cc1101_->set_idle();
     cc1101_->set_frequency(this->rf_freq_);
     cc1101_->begin_rx();
-  }
-
-  void control(const CoverCall &call) override {
-    if (call.get_position().has_value()) {
-      float pos = *call.get_position();
-
-      if (pos == COVER_OPEN) {
-        ESP_LOGI(TAG, "OPEN");
-        sendCC1101Command(Command::Up);
-      } else if (pos == COVER_CLOSED) {
-        ESP_LOGI(TAG, "CLOSE");
-        sendCC1101Command(Command::Down);
-      } else {
-        ESP_LOGI(TAG, "WAT");
-      }
-
-      this->position = pos;
-      this->publish_state();
-    }
-
-    if (call.get_stop()) {
-      ESP_LOGI(TAG, "STOP");
-      sendCC1101Command(Command::My);
-    }
   }
 
   void program() {
