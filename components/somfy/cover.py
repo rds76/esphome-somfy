@@ -2,6 +2,9 @@ import esphome.config_validation as cv
 import esphome.codegen as cg
 from esphome.components import cover, cc1101
 from esphome import pins
+from esphome.const import (
+    CONF_FREQUENCY,
+)
 
 DEPENDENCIES = ["cc1101"]
 AUTO_LOAD = ["cover"]
@@ -11,8 +14,7 @@ SomfyCover = somfy_ns.class_("SomfyCover", cover.Cover, cg.Component)
 
 CONF_SOMFY_REMOTE_ADDRESS = "remote_address"
 CONF_SOMFY_PIN = "pin"
-CONF_SOMFY_RF_FREQ = "rf_freq"
-CONF_SOMFY_SOMFY_FREQ = "somfy_freq"
+CONF_SOMFY_RF_FREQ = "rf_read_freq"
 CONF_SOMFY_REPEAT = "repeat"
 CONF_SOMFY_CC1101 = "cc1101"
 
@@ -24,7 +26,7 @@ CONFIG_SCHEMA = cover.cover_schema(SomfyCover).extend(
         cv.Optional(CONF_SOMFY_RF_FREQ, default="433.92MHz"): cv.All(
           cv.frequency, cv.float_range(min=300.0e6, max=928.0e6)
         ),
-        cv.Optional(CONF_SOMFY_SOMFY_FREQ, default="433.42MHz"): cv.All(
+        cv.Optional(CONF_FREQUENCY, default="433.42MHz"): cv.All(
           cv.frequency, cv.float_range(min=300.0e6, max=928.0e6)
         ),        
         cv.Required(CONF_SOMFY_CC1101): cv.use_id(cc1101.CC1101Component),
