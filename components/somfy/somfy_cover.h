@@ -1,10 +1,6 @@
 #pragma once
 
 #include "esphome/components/cover/cover.h"
-#include "esphome/components/cc1101/cc1101.h"
-#include "esphome/core/component.h"
-#include "SomfyRemote.h"
-#include "EsphomeCodeStorage.h"
 
 namespace esphome {
 namespace somfy {
