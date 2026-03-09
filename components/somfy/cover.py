@@ -4,6 +4,7 @@ from esphome.components import cover, cc1101
 from esphome import pins
 
 DEPENDENCIES = ["cc1101"]
+AUTO_LOAD = ["cover"]
 
 somfy_ns = cg.esphome_ns.namespace("somfy")
 SomfyCover = somfy_ns.class_("SomfyCover", cover.Cover, cg.Component)

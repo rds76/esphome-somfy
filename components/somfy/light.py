@@ -4,6 +4,7 @@ from esphome.components import light, cc1101
 from esphome import pins
 
 DEPENDENCIES = ["cc1101"]
+AUTO_LOAD = ["light"]
 
 somfy_ns = cg.esphome_ns.namespace("somfy")
 SomfyLightOutput = somfy_ns.class_("SomfyLightOutput", light.LightOutput, cg.Component)

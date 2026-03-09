@@ -4,7 +4,7 @@
 #include "esphome/components/cc1101/cc1101.h"
 #include "esphome/core/component.h"
 #include "SomfyRemote.h"
-#include "EsphomeCodeStorage.h"
+#include "EsphomeRollingCodeStorage.h"
 
 namespace esphome {
 namespace somfy {
@@ -16,7 +16,7 @@ static const char *const TAG = "somfy";
 class SomfyComponent : public Component {
 protected:
   SomfyRemote *remote_;
-  EsphomeCodeStorage *storage_;
+  RollingCodeStorage *storage_;
   const char *storage_namespace_;
   const char *storage_key_;
   InternalGPIOPin *emitter_pin_;
@@ -31,7 +31,7 @@ public:
     this->emitter_pin_->digital_write(false);
 
     //storage_ = new NVSRollingCodeStorage(storage_namespace_, storage_key_);
-    storage_ = new EsphomeCodeStorage(remote_address_);
+    storage_ = new EsphomeRollingCodeStorage(remote_address_);
     remote_ = new SomfyRemote(emitter_pin_, remote_address_, storage_);
   }
 

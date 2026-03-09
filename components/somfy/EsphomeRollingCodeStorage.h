@@ -8,7 +8,7 @@ namespace somfy {
 
 static const char *const TAG_CODE = "somfy.code";
 
-class EsphomeCodeStorage : public RollingCodeStorage {
+class EsphomeRollingCodeStorage : public RollingCodeStorage {
 private:
     ESPPreferenceObject preferences;
 
@@ -20,7 +20,9 @@ public:
     uint16_t nextCode() override
     {
         uint16_t code, code_new;
-        preferences.load(&code);        
+        if (!preferences.load(&code)) {
+            code = 1;
+        }
         ESP_LOGD(TAG_CODE, "Rolling code: %04X", code);        
         code_new = code + 1;
         preferences.save(&code_new);
