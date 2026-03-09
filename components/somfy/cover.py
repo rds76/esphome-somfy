@@ -33,7 +33,7 @@ CONFIG_SCHEMA = cv.All(
         ),        
         cv.Required(CONF_SOMFY_CC1101): cv.use_id(cc1101.CC1101Component),
     }
-  ).extend(cv.COMPONENT_SCHEMA)
+  ).extend(cv.COMPONENT_SCHEMA),
   cv.only_on([PLATFORM_ESP32, PLATFORM_ESP8266])
 )
 
