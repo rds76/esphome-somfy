@@ -13,7 +13,7 @@ private:
     ESPPreferenceObject preferences;
 
 public:
-    EsphomeCodeStorage(uint32_t remoteCode)
+    EsphomeRollingCodeStorage(uint32_t remoteCode)
     {
         preferences = global_preferences->make_preference<uint16_t>(remoteCode, true);
     }
