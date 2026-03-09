@@ -4,6 +4,8 @@ from esphome.components import light, cc1101
 from esphome import pins
 from esphome.const import (
     CONF_FREQUENCY,
+    PLATFORM_ESP32,
+    PLATFORM_ESP8266,
 )
 
 DEPENDENCIES = ["cc1101"]
@@ -18,7 +20,8 @@ CONF_SOMFY_RF_FREQ = "rf_read_freq"
 CONF_SOMFY_REPEAT = "repeat"
 CONF_SOMFY_CC1101 = "cc1101"
 
-CONFIG_SCHEMA = light.light_schema(SomfyLightOutput, light.LightType.BINARY).extend(
+CONFIG_SCHEMA = cv.All(
+  light.light_schema(SomfyLightOutput, light.LightType.BINARY).extend(
     {
         cv.Required(CONF_SOMFY_PIN): pins.internal_gpio_output_pin_schema,
         cv.Required(CONF_SOMFY_REMOTE_ADDRESS): cv.int_range(min=0, max=0xFFFFFFFF),        
@@ -31,8 +34,9 @@ CONFIG_SCHEMA = light.light_schema(SomfyLightOutput, light.LightType.BINARY).ext
         ),        
         cv.Required(CONF_SOMFY_CC1101): cv.use_id(cc1101.CC1101Component),
     }
-).extend(cv.COMPONENT_SCHEMA)
-
+  ).extend(cv.COMPONENT_SCHEMA),
+ cv.only_on([PLATFORM_ESP32, PLATFORM_ESP8266])
+)
 
 async def to_code(config):
     var = await light.new_light(config)
