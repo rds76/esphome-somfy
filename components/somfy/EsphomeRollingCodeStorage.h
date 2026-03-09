@@ -23,7 +23,7 @@ public:
         if (!preferences.load(&code)) {
             code = 1;
         }
-        ESP_LOGD(TAG_CODE, "Rolling code: %04X", code);        
+        ESP_LOGD(TAG_CODE, "Rolling code: 0x%04X", code);        
         code_new = code + 1;
         preferences.save(&code_new);
         return code;
