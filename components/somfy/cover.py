@@ -46,5 +46,5 @@ async def to_code(config):
 
     cg.add(var.set_remote_address(config[CONF_SOMFY_REMOTE_ADDRESS]))
     cg.add(var.set_rf_freq(config[CONF_SOMFY_RF_FREQ]))
-    cg.add(var.set_somfy_freq(config[CONF_SOMFY_SOMFY_FREQ]))
+    cg.add(var.set_somfy_freq(config[CONF_FREQUENCY]))
     cg.add(var.set_repeat(config[CONF_SOMFY_REPEAT]))
