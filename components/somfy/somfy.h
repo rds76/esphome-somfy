@@ -27,11 +27,22 @@ protected:
 
 public:
   void setup() override {
-    this->emitter_pin_->pin_mode(gpio::FLAG_OUTPUT);
+    this->emitter_pin_->setup();
     this->emitter_pin_->digital_write(false);
     storage_ = new EsphomeRollingCodeStorage(remote_address_);
     remote_ = new SomfyRemote(emitter_pin_, remote_address_, storage_);
   }
+
+  void dump_config() override {
+    ESP_LOGCONFIG(TAG,
+                  "Somfy:\n"
+                  "  Remote address: 0x%x\n",
+                  "  Repeat command: %ux\n",
+                  "  Tx frequency: %.0f Hz\n",
+                  "  Rx frequency (RF): %.0f Hz\n",
+                  this->remote_address_, this->repeat_, this->somfy_freq_, this->rf_freq_);
+    LOG_PIN("  Tx Pin: ", this->emitter_pin_);
+}
 
   void sendCC1101Command(Command command) {
     ESP_LOGD(TAG, "Entering TX with freq:: %.0fHz", this->somfy_freq_);     
