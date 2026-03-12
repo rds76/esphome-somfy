@@ -35,7 +35,6 @@ public:
 
   void dump_config() override {
     ESP_LOGCONFIG(TAG,
-                  "Somfy:\n"
                   "  Remote address: 0x%x\n"
                   "  Repeat command: %dx\n"
                   "  Tx frequency: %.0f Hz\n"
