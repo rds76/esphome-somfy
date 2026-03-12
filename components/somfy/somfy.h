@@ -37,7 +37,7 @@ public:
     ESP_LOGCONFIG(TAG,
                   "Somfy:\n"
                   "  Remote address: 0x%x\n",
-                  "  Repeat command: %ux\n",
+                  "  Repeat command: %dx\n",
                   "  Tx frequency: %.0f Hz\n",
                   "  Rx frequency (RF): %.0f Hz\n",
                   this->remote_address_, this->repeat_, this->somfy_freq_, this->rf_freq_);
