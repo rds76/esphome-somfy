@@ -36,9 +36,9 @@ public:
   void dump_config() override {
     ESP_LOGCONFIG(TAG,
                   "Somfy:\n"
-                  "  Remote address: 0x%x\n",
-                  "  Repeat command: %dx\n",
-                  "  Tx frequency: %.0f Hz\n",
+                  "  Remote address: 0x%x\n"
+                  "  Repeat command: %dx\n"
+                  "  Tx frequency: %.0f Hz\n"
                   "  Rx frequency (RF): %.0f Hz\n",
                   this->remote_address_, this->repeat_, this->somfy_freq_, this->rf_freq_);
     LOG_PIN("  Tx Pin: ", this->emitter_pin_);
