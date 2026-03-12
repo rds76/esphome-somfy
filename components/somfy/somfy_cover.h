@@ -43,6 +43,11 @@ public:
       sendCC1101Command(Command::My);
     }
   }
+
+  void dump_config() override {
+    ESP_LOGCONFIG(TAG, "Somfy cover:\n");
+    SomfyComponent::dump_config();
+  }
 };
 
 } // namespace somfy

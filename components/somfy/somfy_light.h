@@ -22,6 +22,11 @@ public:
     state->current_values_as_binary(&light_state);
     sendCC1101Command(light_state ? Command::Up : Command::Down);
   }
+
+  void dump_config() override {
+    ESP_LOGCONFIG(TAG, "Somfy light:\n");
+    SomfyComponent::dump_config();
+  }
 };
 
 } // namespace somfy
