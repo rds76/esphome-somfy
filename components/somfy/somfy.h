@@ -34,7 +34,7 @@ protected:
     build_frame(frame, command, rollingCode);
     remote_base::RawTimings t;
     build_timings(t, frame, 2);
-    for (int i = 0; i < this->repeat_count_; i++) {
+    for (int i = 0; i < this->repeat_; i++) {
       build_timings(t, frame, 7);
     }
     auto call = this->remote_transmitter_->transmit();
