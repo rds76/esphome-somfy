@@ -49,6 +49,7 @@ public:
     cc1101_->set_idle();
     cc1101_->set_frequency(this->somfy_freq_);
     delay(20);
+    cc1101_->set_idle();
     cc1101_->begin_tx();
     ESP_LOGD(TAG, "Sending %dx command: 0x%x", this->repeat_, command);
     remote_->sendCommand(command, this->repeat_);
