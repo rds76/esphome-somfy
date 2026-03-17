@@ -49,9 +49,9 @@ protected:
     frame[2] = code >> 8;     // Rolling code (big endian)
     frame[3] = code;          // Rolling code
 
-    frame[4] = this->remote_code_ >> 16;  // Remote address
-    frame[5] = this->remote_code_ >> 8;   // Remote address
-    frame[6] = this->remote_code_;        // Remote address
+    frame[4] = this->remote_address_ >> 16;  // Remote address
+    frame[5] = this->remote_address_ >> 8;   // Remote address
+    frame[6] = this->remote_address_;        // Remote address
 
     // Checksum calculation: a XOR of all the nibbles
     uint8_t checksum = 0;
