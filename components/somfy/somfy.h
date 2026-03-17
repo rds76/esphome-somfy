@@ -51,7 +51,8 @@ public:
     delay(20);
     cc1101_->begin_tx();
     ESP_LOGD(TAG, "Sending %dx command: 0x%x", this->repeat_, command);
-    remote_->sendCommand(command, this->repeat_);
+    remote_->sendCommand(command, this->repeat_);    
+    delay(10);
     ESP_LOGD(TAG, "Entering RX with freq:: %.0fHz", this->rf_freq_);
     cc1101_->set_idle();
     cc1101_->set_frequency(this->rf_freq_);
