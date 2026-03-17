@@ -27,7 +27,6 @@ enum class Command : uint8_t {
 
 class SomfyComponent : public Component {
 protected:
-  SomfyRemote *remote_;
   RollingCodeStorage *storage_;
   const char *storage_namespace_;
   const char *storage_key_;
