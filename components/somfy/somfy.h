@@ -114,11 +114,11 @@ protected:
 
 public:
   void setup() override {
-    this->emitter_pin_->setup();
+    //this->emitter_pin_->setup();
     //this->emitter_pin_->pin_mode(gpio::FLAG_OUTPUT);
-    this->emitter_pin_->digital_write(false);
+    //this->emitter_pin_->digital_write(false);
     storage_ = new EsphomeRollingCodeStorage(remote_address_);
-    remote_ = new SomfyRemote(emitter_pin_, remote_address_, storage_);
+    //remote_ = new SomfyRemote(emitter_pin_, remote_address_, storage_);
   }
 
   void dump_config() override {
