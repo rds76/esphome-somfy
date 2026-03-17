@@ -30,7 +30,7 @@ protected:
   SomfyRemote *remote_;
   RollingCodeStorage *storage_;
   const char *storage_namespace_;
-  const char *storage_key_;  
+  const char *storage_key_;
   uint32_t remote_address_;
   int repeat_;
   cc1101::CC1101Component *cc1101_;
@@ -124,7 +124,7 @@ protected:
 
 public:
   void setup() override {
-    storage_ = new EsphomeRollingCodeStorage(remote_address_);   
+    storage_ = new EsphomeRollingCodeStorage(remote_address_);
   }
 
   void dump_config() override {
@@ -134,7 +134,6 @@ public:
                   "  Tx frequency: %.0f Hz\n"
                   "  Rx frequency (RF): %.0f Hz\n",
                   this->remote_address_, this->repeat_, this->somfy_freq_, this->rf_freq_);
-    LOG_PIN("  Tx Pin: ", this->emitter_pin_);
 }
 
   void sendCC1101Command(Command command) {
@@ -147,7 +146,7 @@ public:
     send_command(command);
     ESP_LOGD(TAG, "Setting freq to %.0fHz", this->rf_freq_);
     cc1101_->set_idle();
-    cc1101_->set_frequency(this->rf_freq_);    
+    cc1101_->set_frequency(this->rf_freq_);
   }
 
   void program() {
