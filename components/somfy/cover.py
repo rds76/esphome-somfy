@@ -24,7 +24,7 @@ CONFIG_SCHEMA = cv.All(
     {
         cv.Required(CONF_SOMFY_PIN): pins.internal_gpio_output_pin_schema,
         cv.Required(CONF_SOMFY_REMOTE_ADDRESS): cv.int_range(min=0, max=0xFFFFFFFF),        
-        cv.Optional(CONF_SOMFY_REPEAT, default=1): cv.int_range(min=1, max=16),
+        cv.Optional(CONF_SOMFY_REPEAT, default=4): cv.int_range(min=1, max=16),
         cv.Optional(CONF_SOMFY_RF_FREQ, default="433.92MHz"): cv.All(
           cv.frequency, cv.float_range(min=300.0e6, max=928.0e6)
         ),
