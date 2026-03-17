@@ -19,7 +19,7 @@ CONF_SOMFY_PIN = "pin"
 CONF_SOMFY_RF_FREQ = "rf_read_freq"
 CONF_SOMFY_REPEAT = "repeat"
 CONF_SOMFY_CC1101 = "cc1101"
-ONF_REMOTE_TRANSMITTER = "remote_transmitter"
+CONF_REMOTE_TRANSMITTER = "remote_transmitter"
 
 CONFIG_SCHEMA = cv.All(
   light.light_schema(SomfyLightOutput, light.LightType.BINARY).extend(
