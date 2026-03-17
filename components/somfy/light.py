@@ -1,21 +1,19 @@
 import esphome.config_validation as cv
 import esphome.codegen as cg
 from esphome.components import light, cc1101, remote_transmitter
-from esphome import pins
 from esphome.const import (
     CONF_FREQUENCY,
     PLATFORM_ESP32,
     PLATFORM_ESP8266,
 )
 
-DEPENDENCIES = ["cc1101"]
+DEPENDENCIES = ["cc1101", "remote_transmitter"]
 AUTO_LOAD = ["light"]
 
 somfy_ns = cg.esphome_ns.namespace("somfy")
 SomfyLightOutput = somfy_ns.class_("SomfyLightOutput", light.LightOutput, cg.Component)
 
 CONF_SOMFY_REMOTE_ADDRESS = "remote_address"
-CONF_SOMFY_PIN = "pin"
 CONF_SOMFY_RF_FREQ = "rf_read_freq"
 CONF_SOMFY_REPEAT = "repeat"
 CONF_SOMFY_CC1101 = "cc1101"
@@ -24,7 +22,6 @@ CONF_REMOTE_TRANSMITTER = "remote_transmitter"
 CONFIG_SCHEMA = cv.All(
   light.light_schema(SomfyLightOutput, light.LightType.BINARY).extend(
     {
-        cv.Required(CONF_SOMFY_PIN): pins.internal_gpio_output_pin_schema,
         cv.Required(CONF_SOMFY_REMOTE_ADDRESS): cv.int_range(min=0, max=0xFFFFFFFF),
         cv.Optional(CONF_SOMFY_REPEAT, default=4): cv.int_range(min=1, max=16),
         cv.Optional(CONF_SOMFY_RF_FREQ, default="433.92MHz"): cv.All(
@@ -43,9 +40,6 @@ CONFIG_SCHEMA = cv.All(
 async def to_code(config):
     var = await light.new_light(config)
     await cg.register_component(var, config)
-
-    pin = await cg.gpio_pin_expression(config[CONF_SOMFY_PIN])
-    cg.add(var.set_pin(pin))
 
     cc1101 = await cg.get_variable(config[CONF_SOMFY_CC1101])
     cg.add(var.set_cc1101(cc1101))

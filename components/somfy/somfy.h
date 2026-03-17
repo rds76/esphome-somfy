@@ -4,7 +4,6 @@
 #include "esphome/components/cc1101/cc1101.h"
 #include "esphome/core/component.h"
 #include "esphome/components/remote_transmitter/remote_transmitter.h"
-#include "SomfyRemote.h"
 #include "EsphomeRollingCodeStorage.h"
 
 namespace esphome {
@@ -14,13 +13,24 @@ using namespace esphome::cover;
 
 static const char *const TAG = "somfy";
 
+enum class Command : uint8_t {
+	My = 0x1,
+	Up = 0x2,
+	MyUp = 0x3,
+	Down = 0x4,
+	MyDown = 0x5,
+	UpDown = 0x6,
+	Prog = 0x8,
+	SunFlag = 0x9,
+	Flag = 0xA
+};
+
 class SomfyComponent : public Component {
 protected:
   SomfyRemote *remote_;
   RollingCodeStorage *storage_;
   const char *storage_namespace_;
-  const char *storage_key_;
-  InternalGPIOPin *emitter_pin_;
+  const char *storage_key_;  
   uint32_t remote_address_;
   int repeat_;
   cc1101::CC1101Component *cc1101_;
@@ -114,11 +124,7 @@ protected:
 
 public:
   void setup() override {
-    //this->emitter_pin_->setup();
-    //this->emitter_pin_->pin_mode(gpio::FLAG_OUTPUT);
-    //this->emitter_pin_->digital_write(false);
-    storage_ = new EsphomeRollingCodeStorage(remote_address_);
-    //remote_ = new SomfyRemote(emitter_pin_, remote_address_, storage_);
+    storage_ = new EsphomeRollingCodeStorage(remote_address_);   
   }
 
   void dump_config() override {
@@ -132,30 +138,22 @@ public:
 }
 
   void sendCC1101Command(Command command) {
-    ESP_LOGD(TAG, "Entering TX with freq:: %.0fHz", this->somfy_freq_);
+    ESP_LOGD(TAG, "Setting freq to %.0fHz", this->somfy_freq_);
     cc1101_->set_idle();
     cc1101_->set_frequency(this->somfy_freq_);
-    delay(20);
-    /*cc1101_->set_idle();
     delay(10);
-    cc1101_->begin_tx();
-    */
     ESP_LOGD(TAG, "Sending %dx command: 0x%x", this->repeat_, command);
     //remote_->sendCommand(command, this->repeat_);
     send_command(command);
-    delay(10);
-    ESP_LOGD(TAG, "Entering RX with freq:: %.0fHz", this->rf_freq_);
+    ESP_LOGD(TAG, "Setting freq to %.0fHz", this->rf_freq_);
     cc1101_->set_idle();
-    cc1101_->set_frequency(this->rf_freq_);
-    //cc1101_->begin_rx();
+    cc1101_->set_frequency(this->rf_freq_);    
   }
 
   void program() {
     ESP_LOGI(TAG, "PROG");
     sendCC1101Command(Command::Prog);
   }
-
-  void set_pin(InternalGPIOPin *pin) { this->emitter_pin_ = pin; }
 
   void set_remote_address(uint32_t remote_address) { this->remote_address_ = remote_address; }
   void set_repeat(int repeat) { this->repeat_ = repeat; }
