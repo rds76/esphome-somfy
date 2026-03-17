@@ -46,6 +46,8 @@ public:
 
   void sendCC1101Command(Command command) {
     ESP_LOGD(TAG, "Entering TX with freq:: %.0fHz", this->somfy_freq_);
+    this->emitter_pin_->pin_mode(gpio::FLAG_OUTPUT);
+    this->emitter_pin_->digital_write(false);
     cc1101_->set_idle();
     cc1101_->set_frequency(this->somfy_freq_);
     delay(20);
