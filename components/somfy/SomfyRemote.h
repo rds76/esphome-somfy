@@ -5,7 +5,7 @@
 #include "esphome/core/hal.h"
 
 namespace esphome {
-namespace somfy {
+namespace somfyremote {
 
 enum class Command : uint8_t {
 	My = 0x1,
@@ -54,5 +54,5 @@ public:
 	void sendCommandWithCode(Command command, uint16_t rollingCode, int repeat = 4);
 };
 
-} // namespace somfy
+} // namespace somfyremote
 } // namespace esphome

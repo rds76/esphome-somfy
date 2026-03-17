@@ -3,7 +3,7 @@
 #define SYMBOL 640
 
 namespace esphome {
-namespace somfy {
+namespace somfyremote {
 
 SomfyRemote::SomfyRemote(esphome::InternalGPIOPin *emitterPin, uint32_t remote, RollingCodeStorage *rollingCodeStorage)
 	: emitterPin(emitterPin), remote(remote), rollingCodeStorage(rollingCodeStorage) {}
@@ -97,6 +97,6 @@ void SomfyRemote::sendLow(uint16_t durationInMicroseconds) {
   delayMicroseconds(durationInMicroseconds);
 }
 
-} // namespace somfy
+} // namespace somfyremote
 } // namespace esphome
 
