@@ -13,6 +13,7 @@ namespace somfy {
 
 void SomfyComponent::send_command(Command command) {
     const uint16_t rollingCode = this->storage_->nextCode();
+    ESP_LOGD(TAG, "Rolling code: 0x%04X", rollingCode);        
     uint8_t frame[7];
     build_frame(frame, command, rollingCode);
     remote_base::RawTimings t;

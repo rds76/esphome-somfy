@@ -29,8 +29,8 @@ protected:
   RollingCodeStorage *storage_;
   uint32_t remote_address_;
   int repeat_{4};
-  cc1101::CC1101Component *cc1101_;
   float rf_freq_, somfy_freq_;
+  cc1101::CC1101Component *cc1101_{nullptr};
   remote_transmitter::RemoteTransmitterComponent *remote_transmitter_{nullptr};
   button::Button *cover_prog_button_{nullptr};
 
