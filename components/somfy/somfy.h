@@ -36,8 +36,6 @@ protected:
   remote_transmitter::RemoteTransmitterComponent *remote_transmitter_{nullptr};
   button::Button *cover_prog_button_{nullptr};
 
-  virtual std::string get_id() = 0;
-
   void send_command(Command command) {
     const uint16_t rollingCode = this->storage_->nextCode();
     uint8_t frame[7];
@@ -146,7 +144,7 @@ public:
     cc1101_->set_idle();
     cc1101_->set_frequency(this->somfy_freq_);
     delay(10);
-    ESP_LOGD(TAG, "'%s': Sending %dx command: 0x%x", this->get_id().c_str(), this->repeat_, command);
+    ESP_LOGD(TAG, "Sending %dx command: 0x%x for button addr: 0x%x", this->repeat_, command, this->remote_address_);
     //remote_->sendCommand(command, this->repeat_);
     send_command(command);
     ESP_LOGD(TAG, "Setting freq to %.0fHz", this->rf_freq_);
