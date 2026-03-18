@@ -132,12 +132,12 @@ protected:
     sendCC1101Command(Command::Prog);
   }
 
-  void change_freq(float f, uint32_t delay) {
+  void change_freq(float f, uint32_t delay_ms) {
     if (this->rf_freq_ == this->somfy_freq_) return;
     ESP_LOGD(TAG, "Setting freq to %.0fHz", f);
     cc1101_->set_idle();
     cc1101_->set_frequency(f);
-    if (delay > 0) delay(delay);
+    if (delay_ms > 0) delay(delay_ms);
   }
 
 public:
