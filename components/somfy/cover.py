@@ -7,7 +7,7 @@ from esphome.const import (
     PLATFORM_ESP8266,
 )
 DEPENDENCIES = ["cc1101", "remote_transmitter"]
-AUTO_LOAD = ["cover"]
+AUTO_LOAD = ["cover", "button"]
 
 somfy_ns = cg.esphome_ns.namespace("somfy")
 SomfyCover = somfy_ns.class_("SomfyCover", cover.Cover, cg.Component)
@@ -17,6 +17,7 @@ CONF_SOMFY_RF_FREQ = "rf_read_freq"
 CONF_SOMFY_REPEAT = "repeat"
 CONF_SOMFY_CC1101 = "cc1101"
 CONF_REMOTE_TRANSMITTER = "remote_transmitter"
+CONF_PROG_BUTTON = "prog_button"
 
 CONFIG_SCHEMA = cv.All(
   cover.cover_schema(SomfyCover).extend(
@@ -31,6 +32,7 @@ CONFIG_SCHEMA = cv.All(
         ),
         cv.Required(CONF_SOMFY_CC1101): cv.use_id(cc1101.CC1101Component),
         cv.Required(CONF_REMOTE_TRANSMITTER): cv.use_id(remote_transmitter.RemoteTransmitterComponent),
+        cv.Optional(CONF_PROG_BUTTON): cv.use_id(button.Button),
     }
   ).extend(cv.COMPONENT_SCHEMA),
   cv.only_on([PLATFORM_ESP32, PLATFORM_ESP8266])
@@ -45,6 +47,9 @@ async def to_code(config):
     cg.add(var.set_cc1101(cc1101))
     remote_transmitter = await cg.get_variable(config[CONF_REMOTE_TRANSMITTER])
     cg.add(var.set_remote_transmitter(remote_transmitter))
+    if CONF_PROG_BUTTON in config:
+      btn = await cg.get_variable(config[CONF_PROG_BUTTON])
+      cg.add(var.set_prog_button(btn))
 
 
     cg.add(var.set_remote_address(config[CONF_SOMFY_REMOTE_ADDRESS]))

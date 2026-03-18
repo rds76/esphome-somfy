@@ -1,6 +1,7 @@
 #pragma once
 
 #include "esphome/components/cover/cover.h"
+#include "esphome/components/button/button.h"
 #include "esphome/components/cc1101/cc1101.h"
 #include "esphome/core/component.h"
 #include "esphome/components/remote_transmitter/remote_transmitter.h"
@@ -28,13 +29,12 @@ enum class Command : uint8_t {
 class SomfyComponent : public Component {
 protected:
   RollingCodeStorage *storage_;
-  const char *storage_namespace_;
-  const char *storage_key_;
   uint32_t remote_address_;
-  int repeat_;
+  int repeat_{4};
   cc1101::CC1101Component *cc1101_;
   float rf_freq_, somfy_freq_;
   remote_transmitter::RemoteTransmitterComponent *remote_transmitter_{nullptr};
+  button::Button *cover_prog_button_{nullptr};
 
 
   void send_command(Command command) {
@@ -124,6 +124,11 @@ protected:
 public:
   void setup() override {
     storage_ = new EsphomeRollingCodeStorage(remote_address_);
+    // Attach the prog button
+    if (this->cover_prog_button_) {
+      this->cover_prog_button_->add_on_press_callback(
+        [=, this] { return this->program(); });
+    }
   }
 
   void dump_config() override {
@@ -159,6 +164,7 @@ public:
   void set_rf_freq(float freq) { this->rf_freq_ = freq; }
   void set_somfy_freq(float freq) { this->somfy_freq_ = freq; }
   void set_remote_transmitter(remote_transmitter::RemoteTransmitterComponent *t) { this->remote_transmitter_ = t; }
+  void set_prog_button(button::Button *cover_prog_button) { this->cover_prog_button_ = cover_prog_button; }
 };
 
 } // namespace somfy
