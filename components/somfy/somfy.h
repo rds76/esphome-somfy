@@ -119,6 +119,22 @@ protected:
     t.push_back(-static_cast<int32_t>(durationUsecs));
   }
 
+  void sendCC1101Command(Command command) {
+    ESP_LOGD(TAG, "Setting freq to %.0fHz", this->somfy_freq_);
+    cc1101_->set_idle();
+    cc1101_->set_frequency(this->somfy_freq_);
+    delay(10);
+    ESP_LOGD(TAG, "Sending %dx command: 0x%x for button addr: 0x%x", this->repeat_, command, this->remote_address_);
+    send_command(command);
+    ESP_LOGD(TAG, "Setting freq to %.0fHz", this->rf_freq_);
+    cc1101_->set_idle();
+    cc1101_->set_frequency(this->rf_freq_);
+  }
+
+  void program() {
+    ESP_LOGI(TAG, "PROG");
+    sendCC1101Command(Command::Prog);
+  }
 
 public:
   void setup() override {
@@ -138,24 +154,6 @@ public:
                   "  Rx frequency (RF): %.0f Hz\n",
                   this->remote_address_, this->repeat_, this->somfy_freq_, this->rf_freq_);
 }
-
-  void sendCC1101Command(Command command) {
-    ESP_LOGD(TAG, "Setting freq to %.0fHz", this->somfy_freq_);
-    cc1101_->set_idle();
-    cc1101_->set_frequency(this->somfy_freq_);
-    delay(10);
-    ESP_LOGD(TAG, "Sending %dx command: 0x%x for button addr: 0x%x", this->repeat_, command, this->remote_address_);
-    //remote_->sendCommand(command, this->repeat_);
-    send_command(command);
-    ESP_LOGD(TAG, "Setting freq to %.0fHz", this->rf_freq_);
-    cc1101_->set_idle();
-    cc1101_->set_frequency(this->rf_freq_);
-  }
-
-  void program() {
-    ESP_LOGI(TAG, "PROG");
-    sendCC1101Command(Command::Prog);
-  }
 
   void set_remote_address(uint32_t remote_address) { this->remote_address_ = remote_address; }
   void set_repeat(int repeat) { this->repeat_ = repeat; }
