@@ -109,7 +109,7 @@ void SomfyComponent::program() {
 
 void SomfyComponent::change_freq(float f, uint32_t delay_ms) {
     if (this->rf_freq_ == this->somfy_freq_) return;
-    ESP_LOGD(TAG, "Setting freq to %.2fMHz", f / 1000000.0);
+    ESP_LOGD(TAG, "Setting freq to %.2f MHz", f / 1000000.0);
     cc1101_->set_idle();
     cc1101_->set_frequency(f);
     if (delay_ms > 0) delay(delay_ms);
@@ -129,9 +129,9 @@ void SomfyComponent::dump_config() {
     ESP_LOGCONFIG(TAG,
                     "  Remote address: 0x%x\n"
                     "  Repeat command: %dx\n"
-                    "  Tx frequency: %.2f Hz\n"
-                    "  Rx frequency (RF): %.0f Hz\n",
-                    this->remote_address_, this->repeat_, this->somfy_freq_, this->rf_freq_ / 1000000.0);
+                    "  Tx frequency: %.2f MHz\n"
+                    "  Rx frequency (RF): %.2f MHz\n",
+                    this->remote_address_, this->repeat_, this->somfy_freq_ / 1000000.0, this->rf_freq_ / 1000000.0);
 }
 
 
