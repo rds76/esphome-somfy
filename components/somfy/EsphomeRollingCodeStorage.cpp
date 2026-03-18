@@ -3,7 +3,7 @@
 namespace esphome {    
 namespace somfy {
 
-static const char *const TAG_CODE = "somfy";    
+static const char *const TAG = "somfy";    
 
 EsphomeRollingCodeStorage::EsphomeRollingCodeStorage(uint32_t remoteCode) {
     preferences = global_preferences->make_preference<uint16_t>(remoteCode, true);
@@ -14,7 +14,7 @@ uint16_t EsphomeRollingCodeStorage::nextCode() {
     if (!preferences.load(&code)) {
         code = 1;
     }
-    ESP_LOGD(TAG_CODE, "Rolling code: 0x%04X", code);        
+    ESP_LOGD(TAG, "Rolling code: 0x%04X", code);        
     code_new = code + 1;
     preferences.save(&code_new);
     return code;
