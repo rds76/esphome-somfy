@@ -10,7 +10,6 @@
 namespace esphome {
 namespace somfy {
 
-static const char *const TAG = "somfy";
 
 void SomfyComponent::send_command(Command command) {
     const uint16_t rollingCode = this->storage_->nextCode();

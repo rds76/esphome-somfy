@@ -10,6 +10,8 @@
 namespace esphome {
 namespace somfy {
 
+static const char *const TAG = "somfy";
+
 enum class Command : uint8_t {
 	My = 0x1,
 	Up = 0x2,
