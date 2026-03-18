@@ -1,6 +1,6 @@
 import esphome.config_validation as cv
 import esphome.codegen as cg
-from esphome.components import cover, cc1101, remote_transmitter
+from esphome.components import cover, cc1101, remote_transmitter, button
 from esphome.const import (
     CONF_FREQUENCY,
     PLATFORM_ESP32,
@@ -47,6 +47,7 @@ async def to_code(config):
     cg.add(var.set_cc1101(cc1101))
     remote_transmitter = await cg.get_variable(config[CONF_REMOTE_TRANSMITTER])
     cg.add(var.set_remote_transmitter(remote_transmitter))
+    
     if CONF_PROG_BUTTON in config:
       btn = await cg.get_variable(config[CONF_PROG_BUTTON])
       cg.add(var.set_prog_button(btn))
