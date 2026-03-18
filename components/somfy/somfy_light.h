@@ -9,7 +9,7 @@ using namespace esphome::light;
 
 class SomfyLightOutput : public LightOutput, public SomfyComponent {
 protected:
-
+  std::string get_id() override { return this->get_object_id(); }
 public:
   LightTraits get_traits() override {
     auto traits = LightTraits();

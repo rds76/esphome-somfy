@@ -9,7 +9,7 @@ using namespace esphome::cover;
 
 class SomfyCover : public Cover, public SomfyComponent {
 protected:
- 
+  std::string get_id() override { return this->get_object_id(); }
 public:
   CoverTraits get_traits() override {
     auto traits = CoverTraits();
