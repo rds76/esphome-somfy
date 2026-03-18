@@ -119,21 +119,25 @@ protected:
     t.push_back(-static_cast<int32_t>(durationUsecs));
   }
 
-  void sendCC1101Command(Command command) {
-    ESP_LOGD(TAG, "Setting freq to %.0fHz", this->somfy_freq_);
-    cc1101_->set_idle();
-    cc1101_->set_frequency(this->somfy_freq_);
-    delay(10);
+  void sendCC1101Command(Command command) {    
+    change_freq(this->somfy_freq_, 10);
     ESP_LOGD(TAG, "Sending %dx command: 0x%x for button addr: 0x%x", this->repeat_, command, this->remote_address_);
     send_command(command);
     ESP_LOGD(TAG, "Setting freq to %.0fHz", this->rf_freq_);
-    cc1101_->set_idle();
-    cc1101_->set_frequency(this->rf_freq_);
+    change_freq(this->rf_freq_, 0);
   }
 
   void program() {
     ESP_LOGI(TAG, "PROG");
     sendCC1101Command(Command::Prog);
+  }
+
+  void change_freq(float f, uint32_t delay) {
+    if (this->rf_freq_ == this->somfy_freq_) return;
+    ESP_LOGD(TAG, "Setting freq to %.0fHz", f);
+    cc1101_->set_idle();
+    cc1101_->set_frequency(f);
+    if (delay > 0) delay(delay);
   }
 
 public:
