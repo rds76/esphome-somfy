@@ -1,6 +1,7 @@
 #pragma once
 
 #include "RollingCodeStorage.h"
+#include "esphome.h"
 
 namespace esphome {
 namespace somfy {

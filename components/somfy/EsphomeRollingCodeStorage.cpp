@@ -1,5 +1,4 @@
 #include "EsphomeRollingCodeStorage.h"
-#include "esphome.h"
 
 namespace esphome {    
 namespace somfy {
