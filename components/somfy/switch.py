@@ -13,12 +13,13 @@ AUTO_LOAD = ["switch", "button"]
 somfy_ns = cg.esphome_ns.namespace("somfy")
 SomfySwitch = somfy_ns.class_("SomfySwitch", switch.Switch, cg.Component)
 
-CONF_ON_TRANSMIT = "on_transmit"
-CONF_ON_COMPLETE = "on_complete"
+CONF_SOMFY_REMOTE_ADDRESS = "remote_address"
 CONF_SOMFY_REPEAT = "repeat"
 CONF_SOMFY_CC1101 = "cc1101"
 CONF_REMOTE_TRANSMITTER = "remote_transmitter"
 CONF_PROG_BUTTON = "prog_button"
+CONF_ON_TRANSMIT = "on_transmit"
+CONF_ON_COMPLETE = "on_complete"
 
 CONFIG_SCHEMA = cv.All(
   switch.switch_schema(SomfySwitch).extend(
