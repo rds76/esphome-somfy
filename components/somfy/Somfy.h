@@ -44,6 +44,9 @@ protected:
   void program();
   void change_freq(float f, uint32_t delay_ms);
 
+  Trigger<> transmit_trigger_;
+  Trigger<> complete_trigger_;
+
 public:
   void setup() override;
   void dump_config() override;
@@ -55,6 +58,9 @@ public:
   void set_somfy_freq(float freq) { this->somfy_freq_ = freq; }
   void set_remote_transmitter(remote_transmitter::RemoteTransmitterComponent *t) { this->remote_transmitter_ = t; }
   void set_prog_button(button::Button *cover_prog_button) { this->cover_prog_button_ = cover_prog_button; }
+
+  Trigger<> *get_transmit_trigger() { return &this->transmit_trigger_; }
+  Trigger<> *get_complete_trigger() { return &this->complete_trigger_; }
 };
 
 } // namespace somfy
