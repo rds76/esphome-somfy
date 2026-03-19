@@ -29,9 +29,9 @@ void SomfyComponent::dump_config() {
                     this->remote_address_, this->repeat_, this->somfy_freq_ / 1000000.0, this->rf_freq_ / 1000000.0);
 }
 
-void SomfyComponent::sendCC1101Command(Command command) {    
-    change_freq(this->somfy_freq_, 10);    
-    send_command(command);    
+void SomfyComponent::sendCC1101Command(Command command) {
+    change_freq(this->somfy_freq_, 10);
+    send_command(command);
     change_freq(this->rf_freq_, 0);
 }
 
@@ -48,9 +48,15 @@ void SomfyComponent::change_freq(float f, uint32_t delay_ms) {
     if (delay_ms > 0) delay(delay_ms);
 }
 
-void SomfyComponent::send_command(Command command) {    
+void SomfyComponent::send_command_internal(Command command) {
+    this->transmit_trigger_.trigger();
+    send_command(command);
+    this->complete_trigger_.trigger();
+}
+
+void SomfyComponent::send_command(Command command) {
     const uint16_t rollingCode = this->storage_->nextCode();
-    ESP_LOGD(TAG, "Sending %dx command: 0x%x for button addr: 0x%x with rolling code: 0x%04X", this->repeat_, command, this->remote_address_, rollingCode);    
+    ESP_LOGD(TAG, "Sending %dx command: 0x%x for button addr: 0x%x with rolling code: 0x%04X", this->repeat_, command, this->remote_address_, rollingCode);
     uint8_t frame[7];
     build_frame(frame, command, rollingCode);
     remote_base::RawTimings t;

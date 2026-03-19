@@ -13,7 +13,7 @@ protected:
 public:
 
   void write_state(bool state) override {    
-    send_command(state ? Command::Up : Command::Down);
+    send_command_internal(state ? Command::Up : Command::Down);
     this->publish_state(state);
   }
 

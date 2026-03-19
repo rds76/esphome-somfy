@@ -39,7 +39,8 @@ protected:
   void build_timings(remote_base::RawTimings & t, uint8_t *frame, uint8_t sync);
   void send_high(remote_base::RawTimings & t, int32_t durationUsecs);
   void send_low(remote_base::RawTimings & t, int32_t durationUsecs);
-  
+
+  void send_command_internal(Command command);
   void sendCC1101Command(Command command);
   void program();
   void change_freq(float f, uint32_t delay_ms);
