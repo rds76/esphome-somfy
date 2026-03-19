@@ -49,7 +49,7 @@ async def to_code(config):
       btn = await cg.get_variable(config[CONF_PROG_BUTTON])
       cg.add(var.set_prog_button(btn))
 
-   if on_transmit_config := config.get(CONF_ON_TRANSMIT):
+    if on_transmit_config := config.get(CONF_ON_TRANSMIT):
         await automation.build_automation(
             var.get_transmit_trigger(), [], on_transmit_config
         )
