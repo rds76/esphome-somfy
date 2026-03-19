@@ -34,12 +34,6 @@ protected:
   remote_transmitter::RemoteTransmitterComponent *remote_transmitter_{nullptr};
   button::Button *cover_prog_button_{nullptr};
 
-  void send_command(Command command);
-  void build_frame(uint8_t *frame, Command command, uint16_t code);
-  void build_timings(remote_base::RawTimings & t, uint8_t *frame, uint8_t sync);
-  void send_high(remote_base::RawTimings & t, int32_t durationUsecs);
-  void send_low(remote_base::RawTimings & t, int32_t durationUsecs);
-
   void send_command_internal(Command command);
   void sendCC1101Command(Command command);
   void program();
@@ -47,6 +41,13 @@ protected:
 
   Trigger<> transmit_trigger_;
   Trigger<> complete_trigger_;
+
+private:
+  void send_command(Command command);
+  void build_frame(uint8_t *frame, Command command, uint16_t code);
+  void build_timings(remote_base::RawTimings & t, uint8_t *frame, uint8_t sync);
+  void send_high(remote_base::RawTimings & t, int32_t durationUsecs);
+  void send_low(remote_base::RawTimings & t, int32_t durationUsecs);
 
 public:
   void setup() override;
