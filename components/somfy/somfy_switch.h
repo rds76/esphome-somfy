@@ -21,7 +21,7 @@ public:
     SomfyComponent::dump_config();
   }
 
-  bool assumed_state() override { return true; }
+  bool assumed_state() override { return false; }
 };
 
 } // namespace somfy
