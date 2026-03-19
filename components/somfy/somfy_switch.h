@@ -14,6 +14,7 @@ public:
 
   void write_state(bool state) override {    
     send_command(state ? Command::Up : Command::Down);
+    this->publish_state(state);
   }
 
   void dump_config() override {
