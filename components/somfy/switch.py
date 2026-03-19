@@ -21,7 +21,7 @@ CONF_REMOTE_TRANSMITTER = "remote_transmitter"
 CONF_PROG_BUTTON = "prog_button"
 
 CONFIG_SCHEMA = cv.All(
-  light.light_schema(SomfySwitch, light.LightType.BINARY).extend(
+  switch.switch_schema(SomfySwitch).extend(
     {
         cv.Required(CONF_SOMFY_REMOTE_ADDRESS): cv.int_range(min=0, max=0xFFFFFFFF),
         cv.Optional(CONF_SOMFY_REPEAT, default=4): cv.int_range(min=1, max=16),
@@ -58,6 +58,6 @@ async def to_code(config):
         await automation.build_automation(
             var.get_complete_trigger(), [], on_complete_config
         )
-        
+
     cg.add(var.set_somfy_freq(config[CONF_FREQUENCY]))
     cg.add(var.set_repeat(config[CONF_SOMFY_REPEAT]))
