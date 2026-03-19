@@ -10,6 +10,44 @@
 namespace esphome {
 namespace somfy {
 
+void SomfyComponent::setup() {
+    storage_ = new EsphomeRollingCodeStorage(remote_address_);
+    // Attach the prog button
+    if (this->cover_prog_button_) {
+        this->cover_prog_button_->add_on_press_callback(
+            [=, this] { return this->program(); }
+        );
+    }
+}
+
+void SomfyComponent::dump_config() {
+    ESP_LOGCONFIG(TAG,
+                    "  Remote address: 0x%x\n"
+                    "  Repeat command: %dx\n"
+                    "  Tx frequency: %.2f MHz\n"
+                    "  Rx frequency (RF): %.2f MHz\n",
+                    this->remote_address_, this->repeat_, this->somfy_freq_ / 1000000.0, this->rf_freq_ / 1000000.0);
+}
+
+void SomfyComponent::sendCC1101Command(Command command) {    
+    change_freq(this->somfy_freq_, 10);
+    ESP_LOGD(TAG, "Sending %dx command: 0x%x for button addr: 0x%x", this->repeat_, command, this->remote_address_);
+    send_command(command);    
+    change_freq(this->rf_freq_, 0);
+}
+
+void SomfyComponent::program() {
+    ESP_LOGI(TAG, "PROG");
+    sendCC1101Command(Command::Prog);
+}
+
+void SomfyComponent::change_freq(float f, uint32_t delay_ms) {
+    if (this->rf_freq_ == this->somfy_freq_) return;
+    ESP_LOGD(TAG, "Setting freq to %.2f MHz", f / 1000000.0);
+    cc1101_->set_idle();
+    cc1101_->set_frequency(f);
+    if (delay_ms > 0) delay(delay_ms);
+}
 
 void SomfyComponent::send_command(Command command) {
     const uint16_t rollingCode = this->storage_->nextCode();
@@ -94,46 +132,6 @@ void SomfyComponent::send_high(remote_base::RawTimings & t, int32_t durationUsec
 void SomfyComponent::send_low(remote_base::RawTimings & t, int32_t durationUsecs) {
     t.push_back(-static_cast<int32_t>(durationUsecs));
 }
-
-void SomfyComponent::sendCC1101Command(Command command) {    
-    change_freq(this->somfy_freq_, 10);
-    ESP_LOGD(TAG, "Sending %dx command: 0x%x for button addr: 0x%x", this->repeat_, command, this->remote_address_);
-    send_command(command);    
-    change_freq(this->rf_freq_, 0);
-}
-
-void SomfyComponent::program() {
-    ESP_LOGI(TAG, "PROG");
-    sendCC1101Command(Command::Prog);
-}
-
-void SomfyComponent::change_freq(float f, uint32_t delay_ms) {
-    if (this->rf_freq_ == this->somfy_freq_) return;
-    ESP_LOGD(TAG, "Setting freq to %.2f MHz", f / 1000000.0);
-    cc1101_->set_idle();
-    cc1101_->set_frequency(f);
-    if (delay_ms > 0) delay(delay_ms);
-}
-
-
-void SomfyComponent::setup() {
-    storage_ = new EsphomeRollingCodeStorage(remote_address_);
-    // Attach the prog button
-    if (this->cover_prog_button_) {
-        this->cover_prog_button_->add_on_press_callback(
-        [=, this] { return this->program(); });
-    }
-}
-
-void SomfyComponent::dump_config() {
-    ESP_LOGCONFIG(TAG,
-                    "  Remote address: 0x%x\n"
-                    "  Repeat command: %dx\n"
-                    "  Tx frequency: %.2f MHz\n"
-                    "  Rx frequency (RF): %.2f MHz\n",
-                    this->remote_address_, this->repeat_, this->somfy_freq_ / 1000000.0, this->rf_freq_ / 1000000.0);
-}
-
 
 } // namespace somfy
 } // namespace esphome
