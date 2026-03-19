@@ -38,7 +38,7 @@ CONFIG_SCHEMA = cv.All(
 )
 
 async def to_code(config):
-    var = await light.new_light(config)
+    var = await switch.new_switch(config)
     await cg.register_component(var, config)
 
     cc1101 = await cg.get_variable(config[CONF_SOMFY_CC1101])
