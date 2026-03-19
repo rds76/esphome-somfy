@@ -1,6 +1,6 @@
 #pragma once
 
-#include "esphome/components/switch/light_output.h"
+#include "esphome/components/switch/switch.h"
 
 namespace esphome {
 namespace somfy {
