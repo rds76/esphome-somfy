@@ -24,9 +24,7 @@ void SomfyComponent::dump_config() {
     ESP_LOGCONFIG(TAG,
                     "  Remote address: 0x%x\n"
                     "  Repeat command: %dx\n"
-                    "  Tx frequency: %.2f MHz\n"
-                    "  Rx frequency (RF): %.2f MHz\n",
-                    this->remote_address_, this->repeat_, this->somfy_freq_ / 1000000.0, this->rf_freq_ / 1000000.0);
+                    this->remote_address_, this->repeat_);
 }
 
 void SomfyComponent::program() {
