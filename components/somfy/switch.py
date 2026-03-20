@@ -1,6 +1,6 @@
-from esphome import automation
 import esphome.config_validation as cv
 import esphome.codegen as cg
+from esphome import automation
 from esphome.components import switch, cc1101, remote_transmitter, button
 from esphome.const import (
     PLATFORM_ESP32,
@@ -50,7 +50,6 @@ async def to_code(config):
         await automation.build_automation(
             var.get_transmit_trigger(), [], on_transmit_config
         )
-
     if on_complete_config := config.get(CONF_ON_COMPLETE):
         await automation.build_automation(
             var.get_complete_trigger(), [], on_complete_config
