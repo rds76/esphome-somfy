@@ -15,7 +15,7 @@ void SomfyComponent::setup() {
     // Attach the prog button
     if (this->cover_prog_button_) {
         this->cover_prog_button_->add_on_press_callback(
-            [=, this] { return this->program(); }
+            [=, this] { this->program(); }
         );
     }
 }
@@ -23,13 +23,13 @@ void SomfyComponent::setup() {
 void SomfyComponent::dump_config() {
     ESP_LOGCONFIG(TAG,
                     "  Remote address: 0x%x\n"
-                    "  Repeat command: %dx\n"
+                    "  Repeat command: %dx\n",
                     this->remote_address_, this->repeat_);
 }
 
 void SomfyComponent::program() {
     ESP_LOGI(TAG, "PROG");
-    sendCC1101Command(Command::Prog);
+    send_command_internal(Command::Prog);
 }
 
 void SomfyComponent::send_command_internal(Command command) {
