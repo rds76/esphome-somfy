@@ -20,7 +20,7 @@ public:
   void write_state(LightState *state) override {
     bool light_state;
     state->current_values_as_binary(&light_state);
-    sendCC1101Command(light_state ? Command::Up : Command::Down);
+    send_command_internal(light_state ? Command::Up : Command::Down);
   }
 
   void dump_config() override {

@@ -29,23 +29,9 @@ void SomfyComponent::dump_config() {
                     this->remote_address_, this->repeat_, this->somfy_freq_ / 1000000.0, this->rf_freq_ / 1000000.0);
 }
 
-void SomfyComponent::sendCC1101Command(Command command) {
-    change_freq(this->somfy_freq_, 10);
-    send_command(command);
-    change_freq(this->rf_freq_, 0);
-}
-
 void SomfyComponent::program() {
     ESP_LOGI(TAG, "PROG");
     sendCC1101Command(Command::Prog);
-}
-
-void SomfyComponent::change_freq(float f, uint32_t delay_ms) {
-    if (this->rf_freq_ == this->somfy_freq_) return;
-    ESP_LOGD(TAG, "Setting freq to %.2f MHz", f / 1000000.0);
-    cc1101_->set_idle();
-    cc1101_->set_frequency(f);
-    if (delay_ms > 0) delay(delay_ms);
 }
 
 void SomfyComponent::send_command_internal(Command command) {

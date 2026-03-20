@@ -29,15 +29,11 @@ protected:
   RollingCodeStorage *storage_;
   uint32_t remote_address_;
   int repeat_{4};
-  float rf_freq_, somfy_freq_;
-  cc1101::CC1101Component *cc1101_{nullptr};
   remote_transmitter::RemoteTransmitterComponent *remote_transmitter_{nullptr};
   button::Button *cover_prog_button_{nullptr};
 
   void send_command_internal(Command command);
-  void sendCC1101Command(Command command);
   void program();
-  void change_freq(float f, uint32_t delay_ms);
 
   Trigger<> transmit_trigger_;
   Trigger<> complete_trigger_;
@@ -55,9 +51,6 @@ public:
 
   void set_remote_address(uint32_t remote_address) { this->remote_address_ = remote_address; }
   void set_repeat(int repeat) { this->repeat_ = repeat; }
-  void set_cc1101(cc1101::CC1101Component *cc1101) { this->cc1101_ = cc1101; }
-  void set_rf_freq(float freq) { this->rf_freq_ = freq; }
-  void set_somfy_freq(float freq) { this->somfy_freq_ = freq; }
   void set_remote_transmitter(remote_transmitter::RemoteTransmitterComponent *t) { this->remote_transmitter_ = t; }
   void set_prog_button(button::Button *cover_prog_button) { this->cover_prog_button_ = cover_prog_button; }
 

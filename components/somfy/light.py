@@ -2,7 +2,7 @@ import esphome.config_validation as cv
 import esphome.codegen as cg
 from esphome import automation
 from esphome.components import light, remote_transmitter, button
-from esphome.const import (    
+from esphome.const import (
     PLATFORM_ESP32,
     PLATFORM_ESP8266,
 )

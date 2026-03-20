@@ -2,7 +2,7 @@ import esphome.config_validation as cv
 import esphome.codegen as cg
 from esphome import automation
 from esphome.components import cover, remote_transmitter, button
-from esphome.const import (    
+from esphome.const import (
     PLATFORM_ESP32,
     PLATFORM_ESP8266,
 )
@@ -55,5 +55,5 @@ async def to_code(config):
       btn = await cg.get_variable(config[CONF_PROG_BUTTON])
       cg.add(var.set_prog_button(btn))
 
-    cg.add(var.set_remote_address(config[CONF_SOMFY_REMOTE_ADDRESS]))    
+    cg.add(var.set_remote_address(config[CONF_SOMFY_REMOTE_ADDRESS]))
     cg.add(var.set_repeat(config[CONF_SOMFY_REPEAT]))
