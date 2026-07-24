@@ -22,7 +22,7 @@ void SomfyComponent::setup() {
 
 void SomfyComponent::dump_config() {
     ESP_LOGCONFIG(TAG,
-                    "  Remote address: 0x%x\n"
+                    "  Remote address: 0x%" PRIx32 "\n"
                     "  Repeat command: %dx\n",
                     this->remote_address_, this->repeat_);
 }
@@ -40,7 +40,7 @@ void SomfyComponent::send_command_internal(Command command) {
 
 void SomfyComponent::send_command(Command command) {
     const uint16_t rollingCode = this->storage_->nextCode();
-    ESP_LOGD(TAG, "Sending %dx command: 0x%x for button addr: 0x%x with rolling code: 0x%04X", this->repeat_, command, this->remote_address_, rollingCode);
+    ESP_LOGD(TAG, "Sending %dx command: 0x%x for button addr: 0x%" PRIx32 " with rolling code: 0x%04X", this->repeat_, command, this->remote_address_, rollingCode);
     uint8_t frame[7];
     build_frame(frame, command, rollingCode);
     remote_base::RawTimings t;
